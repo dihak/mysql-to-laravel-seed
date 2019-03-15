@@ -37,7 +37,7 @@ foreach ($schema as $tableName => $columns){
 				fwrite($file,$line);
 			}
 		}
-		fwrite($file,get_tail());
+		fwrite($file,get_tail($tableName));
 		echo("File ".$filePath." created\n");	
 		fclose($file);
 	}
@@ -77,7 +77,7 @@ function get_head($tableName){
 	$result .="    public function data() {\n        \$$tableName = [\n";
 	return $result;
 }
-function get_tail(){
+function get_tail($tableName){
   	$result = "        ];\n\n        return \$$tableName;\n    }\n}";
 	return $result;
 }
@@ -91,6 +91,6 @@ function format_row($row){
 		}
 	}
 	$result = mb_substr($result, 0, -2);
-	$result .= "\n            ]\n";
+	$result .= "\n            ],\n";
 	return $result;
 }
