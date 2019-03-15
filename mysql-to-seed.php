@@ -78,7 +78,7 @@ function get_head($tableName){
 	return $result;
 }
 function get_tail(){
-  	$result = "        ];\n    }\n}";
+  	$result = "        ];\n\n        return \$$tableName;\n    }\n}";
 	return $result;
 }
 function format_row($row){
