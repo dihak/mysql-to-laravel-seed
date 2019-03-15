@@ -1,5 +1,6 @@
 #!/usr/bin/php
 <?php
+include 'mysql.php';
 mb_internal_encoding("UTF-8");
 $shortopts  = "h:u:p:d:s:";
 $opts = getopt($shortopts);
@@ -73,23 +74,23 @@ function snake_to_camel($val) {
 }  
 function get_head($tableName){
 	$result = "<?php\n\nclass ".snake_to_camel($tableName)."TableSeeder extends Seeder {\n";
-	$result .="  public function run() {\n    DB::table('".$tableName."')->insert([\n";
+	$result .="    public function data() {\n        \$$tableName = [\n";
 	return $result;
 }
 function get_tail(){
-  	$result = "    ]);\n  }\n}";
+  	$result = "        ];\n    }\n}";
 	return $result;
 }
 function format_row($row){
-	$result = "      [";
+	$result = "            [\n";
 	foreach($row as $key => $value){
 		if ($key == 'timestamps'){
 			$result .= "'created_at' => new DateTime, 'updated_at' => new DateTime,";
 		} else {
-			$result .= "'".$key."' => '".utf8_encode($value)."',";
+			$result .= "                '".$key."' => '".utf8_encode($value)."',\n";
 		}
 	}
-	$result = mb_substr($result, 0, -1);
-	$result .= "],\n";
+	$result = mb_substr($result, 0, -2);
+	$result .= "\n            ]\n";
 	return $result;
 }
